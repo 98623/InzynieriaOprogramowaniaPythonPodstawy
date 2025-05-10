@@ -33,7 +33,7 @@ Wymagania:
 - Dla każdego zapytania, zwrócenie posortowanej listy indeksów dokumentów.
 """
 
-
+import re
 def index_documents(documents: list[str], queries: list[str]) -> list[list[int]]:
     """
     Przetwarza dokumenty i zapytania, zwracając listy indeksów dokumentów,
@@ -48,9 +48,25 @@ def index_documents(documents: list[str], queries: list[str]) -> list[list[int]]
         list[list[int]]: Lista wyników dla kolejnych zapytań.
     """
     ### TUTAJ PODAJ ROZWIĄZANIE ZADANIA
+    processed_docs = []
+    for doc in documents:
+        words = re.findall(r'\b\w+\b', doc.lower())
+        processed_docs.append(words)
 
-    ### return [[]] - powinno być zmienione i zwrócić prawdziwy wynik (zgodny z oczekiwaniami)
-    return [[]]
+    results = []
+    for query in queries:
+        query_lower = query.lower()
+        counts = []
+        for doc_idx, words in enumerate(processed_docs):
+            count = words.count(query_lower)
+            if count > 0:
+                counts.append((doc_idx, count))
+
+        # Sortowanie: najpierw malejąco po liczbie wystąpień, potem rosnąco po indeksie
+        counts.sort(key=lambda x: (-x[1], x[0]))
+        results.append([doc_idx for doc_idx, _ in counts])
+
+    return results
 
 
 # Przykładowe wywołanie:

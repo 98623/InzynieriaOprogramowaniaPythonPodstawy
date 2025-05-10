@@ -31,18 +31,20 @@ def check_parentheses(s: str) -> bool:
         bool: True jeśli nawiasy są poprawne, False w przeciwnym wypadku.
     """
     ### TUTAJ PODAJ ROZWIĄZANIE ZADANIA
+    stack = []
+    for char in s:
+        if char == '(':
+            stack.append(char)
+        elif char == ')':
+            if not stack:
+                return False
+            stack.pop()
+    return len(stack) == 0
 
-    ### return False - powinno być zmienione i zwrócić prawdziwy wynik (zgodny z oczekiwaniami)
-    return False
-
-# Przykładowe wywołanie:
 if __name__ == "__main__":
-    examples = [
-        "( if ( zero ? x ) max (/ 1 x ))",
-        "I told ( that its not ( yet ) done ). (42)",
-        ":-)",
-        "Czesc (o kurcze, chyba niechcacy zamkne ten nawias dwa razy))",
-        "())(("
-    ]
-    for example in examples:
-        print(f"{example} -> {check_parentheses(example)}")
+    user_input = input("Podaj ciąg znaków do sprawdzenia nawiasów: ")
+    wynik = check_parentheses(user_input)
+    if wynik:
+        print("Nawiasy są poprawne.")
+    else:
+        print("Nawiasy nie są poprawne.")
